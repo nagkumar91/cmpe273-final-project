@@ -1,21 +1,27 @@
+from django.contrib.auth.models import AbstractBaseUser, UserManager, AbstractUser
 from django.db import models
 
 # Create your models here.
 from model_utils.models import TimeStampedModel
 
 
-class AppUser(TimeStampedModel):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+class AppUser(AbstractUser):
     twitter_handle = models.CharField(max_length=255)
-    email_id = models.CharField(max_length=255, null=True, blank=True)
     user_access_token = models.CharField(max_length=1024, null=True, blank=True)
     user_access_secret = models.CharField(max_length=1024, null=True, blank=True)
+    extra_data = models.TextField(null=True, blank=True)
     send_mail = models.BooleanField(default=True)
     unsubscribe = models.BooleanField(default=False)
 
+    USERNAME_FIELD = 'username'
+
+    objects = UserManager()
+
     def __unicode__(self):
-        return "%s %s" % (self.first_name, self.last_name)
+        if self.first_name and self.last_name:
+            return "%s %s" % (self.first_name, self.last_name)
+        else:
+            return self.username
 
     class Meta:
         verbose_name_plural = "App Users"

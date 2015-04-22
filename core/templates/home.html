@@ -5,6 +5,7 @@
     <title></title>
 </head>
 <body>
-Hello World
+<h1>hello {{ oauth_token }}</h1>
+{% url "socialauth_begin" "twitter" %}
 </body>
 </html>

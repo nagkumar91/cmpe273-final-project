@@ -5,7 +5,7 @@ from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
 
-########## PATH CONFIGURATION
+# ######### PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
@@ -139,6 +139,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_login_redirect',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -248,11 +252,21 @@ INSTALLED_APPS += (
     # Database migration helpers:
     'south',
     'core',
+    'social_auth'
 )
 # Don't need to use South when setting up a test database.
 SOUTH_TESTS_MIGRATE = False
 ########## END SOUTH CONFIGURATION
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
+TWITTER_CONSUMER_KEY = 'cGKDvjU4Z9EahcMknGtrQFaMq'
+TWITTER_CONSUMER_SECRET = 'zBaBU36Nmnl0y1QtLKGdpMFbvOB74cZaNTPtTKpk9sxgdb7qoc'
 
-TWITTER_APP_KEY = 'WfjAXoQYE5wmsAeNYbNeSlfA5'
-TWITTER_APP_SECRET = 'jHP079cAVTnQK9fqnXIfIY8BMbQ6fohgBTCDHJqiZlT7ZIY9nY'
+LOGIN_URL = '/login-form/'
+LOGIN_REDIRECT_URL = '/logged-in/'
+LOGIN_ERROR_URL = '/login-error/'
+AUTH_USER_MODEL = 'core.AppUser'
+SOCIAL_AUTH_USER_MODEL = 'core.AppUser'
