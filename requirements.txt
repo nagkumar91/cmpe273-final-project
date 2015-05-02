@@ -7,4 +7,5 @@ South==0.8.4
 django-filter
 psycopg2
 django-debug-toolbar==1.2.1
+nltk
 requests
