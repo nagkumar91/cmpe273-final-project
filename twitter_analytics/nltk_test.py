@@ -44,7 +44,7 @@ class POSTagger(object):
         pos = [[(word, word, [postag]) for (word, postag) in sentence] for sentence in pos]
         return pos
 
-# class Splitter(object):
+#class Splitter(object):
 #    def __init__(self):
 #        nltk.data.path.append("../nltk_data")
 #        print nltk.data.path
@@ -90,7 +90,6 @@ splitted_sentences = splitter.split(text)
 print splitted_sentences
 pos_tagged_sentences = postagger.pos_tag(splitted_sentences)
 print pos_tagged_sentences
-
 #splitter = Splitter()
 #postagger = POSTagger()
 #splitted_sentences = splitter.split(text)
@@ -102,8 +101,6 @@ print pos_tagged_sentences
 
 def word_feats(words):
     return dict([(word, True) for word in words])
-
-
 negids = movie_reviews.fileids('neg')
 posids = movie_reviews.fileids('pos')
 
@@ -118,4 +115,3 @@ trainfeats = negfeats[:negcutoff] + posfeats[:poscutoff]
 classifier = NaiveBayesClassifier.train(trainfeats)
 feat = word_feats(['Your song is annoying'])
 print classifier.classify(feat)
-

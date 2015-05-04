@@ -17,7 +17,6 @@ def login_error(request):
     print request
     return HttpResponse("login error")
 
-
 @login_required()
 def logged_in_page(request):
     print request.user

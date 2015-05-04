@@ -88,6 +88,13 @@ def get_data():
         except Exception as e:
             print e
             print "Exception! User not found in keys table"
+    users = AppUser.objects.filter(send_mail=True)
+    for user in users:
+        auth = OAuth1(settings.TWITTER_APP_KEY, settings.TWITTER_APP_SECRET, user.user_access_token,
+                      user.user_access_secret)
+        # max_id = fetch_200_tweets(auth, user, max_id)
+        unique_hash_tags = unique_hastags(user)
+        print unique_hash_tags
 
 
 class Command(BaseCommand):
