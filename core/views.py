@@ -8,7 +8,6 @@ from django.template import RequestContext
 
 
 def homepage(request):
-    print request
     return render_to_response("home.html",
                               context_instance=RequestContext(request))
 
