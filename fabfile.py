@@ -21,11 +21,11 @@ def deploy():
     print(green("Deployment complete"))
     with cd(dir_in_server):
         print(magenta("Inside server"))
-        run("git reset --hard || true", user=env.user)
-        run("git pull", user=env.user)
-        run("source /home/cmpe273/env/bin/activate && pip install -r requirements.txt", user=env.user)
+        run("git reset --hard || true")
+        run("git pull")
+        run("source /home/cmpe273/env/bin/activate && pip install -r requirements.txt")
         with shell_env(DJANGO_SETTINGS_MODULE='twitter_analytics.settings.production'):
-            run("source /home/cmpe273/env/bin/activate && ./manage.py collectstatic --noinput", user=env.user)
-            run("source /home/cmpe273/env/bin/activate && ./manage.py migrate --no-initial-data", user=env.user)
+            run("source /home/cmpe273/env/bin/activate && ./manage.py collectstatic --noinput")
+            run("source /home/cmpe273/env/bin/activate && ./manage.py migrate --no-initial-data")
         sudo("service apache2 restart")
     print(green("Deployment complete"))
