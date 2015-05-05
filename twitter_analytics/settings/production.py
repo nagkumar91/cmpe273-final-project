@@ -4,8 +4,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'twitter_analytics',
-        'USER': 'nagkumar',
-        'PASSWORD': 'root123',
+        'USER': 'cmpe273',
+        'PASSWORD': 'cmpe273',
         'HOST': '',
         'PORT': '',
     }
