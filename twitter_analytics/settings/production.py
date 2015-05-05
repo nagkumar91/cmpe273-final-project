@@ -10,3 +10,6 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+# DEBUG = True #temporary
+ALLOWED_HOSTS = ['*']
