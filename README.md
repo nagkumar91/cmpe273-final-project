@@ -59,3 +59,6 @@ python manage.py runserver 0.0.0.0:8081
 
 
 Deployment Instructions:
+```
+fab -H cmpe273.nagkumar.com -u cmpe273 deploy
+```
