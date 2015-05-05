@@ -6,9 +6,10 @@
 </head>
 <body>
 <h1>Welcome to Twitter Analytics!</h1>
-<h3>Get started by loggin in!</h3>
-<a href="/login/twitter/"><img src="https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png" alt="Sign in with Twitter" title="Sign in with Twitter"></a>
-<h1>hello {{ oauth_token }}</h1>
-{% url "socialauth_begin" "twitter" %}
+<h3>Get started by logging in!</h3>
+<a href="{% url "socialauth_begin" "twitter" %}">
+    <img src="https://g.twimg.com/dev/sites/default/files/images_documentation/sign-in-with-twitter-gray.png"
+         alt="Sign in with Twitter" title="Sign in with Twitter">
+</a>
 </body>
 </html>
