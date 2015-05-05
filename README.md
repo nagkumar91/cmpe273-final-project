@@ -59,11 +59,3 @@ python manage.py runserver 0.0.0.0:8081
 
 
 Deployment Instructions:
-ssh to server
-create user
-add user to sudo (gpasswd -a user sudo)
-create ssh pub key
-add pub key to github's deployment keys
-install db (postgresql)
-install mod_wsgi
-syncdb

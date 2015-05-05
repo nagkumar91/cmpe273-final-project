@@ -10,3 +10,4 @@ nltk
 requests
 requests-oauthlib
 python-social-auth
+fabric
