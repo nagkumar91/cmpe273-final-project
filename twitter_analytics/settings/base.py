@@ -1,6 +1,6 @@
 """Common settings and globals."""
 import datetime
-
+import os
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
 
@@ -8,6 +8,10 @@ from sys import path
 # ######### PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRET_KEY = 'cmpe273#o(b1!=&)f5^rcy2gw76y*y+!^$_ber7^*-n8(=d!38)tvyllvtwitter'
 
 # Absolute filesystem path to the top-level project folder:
 SITE_ROOT = dirname(DJANGO_ROOT)
@@ -109,7 +113,6 @@ STATICFILES_FINDERS = (
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = r"e99o!rse-5eu2t(&)-@!_4_!c!kdiz@o2ll_+xa^eo!1j6^-@7"
 ########## END SECRET CONFIGURATION
 
 
@@ -139,10 +142,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    'social_auth.context_processors.social_auth_by_name_backends',
-    'social_auth.context_processors.social_auth_backends',
-    'social_auth.context_processors.social_auth_by_type_backends',
-    'social_auth.context_processors.social_auth_login_redirect',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-loaders
@@ -156,6 +157,23 @@ TEMPLATE_DIRS = (
     normpath(join(SITE_ROOT, 'templates')),
     normpath(join(SITE_ROOT, 'core', 'templates')),
 )
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "core", "templates")],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 ########## END TEMPLATE CONFIGURATION
 
 
@@ -163,20 +181,21 @@ TEMPLATE_DIRS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#middleware-classes
 MIDDLEWARE_CLASSES = (
     # Default Django middleware.
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'core.disable.DisableCSRF',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 )
 ########## END MIDDLEWARE CONFIGURATION
 
 
 ########## URL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
-ROOT_URLCONF = '%s.urls' % SITE_NAME
+ROOT_URLCONF = 'twitter_analytics.urls'
 ########## END URL CONFIGURATION
 
 
@@ -200,6 +219,8 @@ DJANGO_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'core',
+    'social.apps.django_app.default',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -242,23 +263,11 @@ LOGGING = {
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+WSGI_APPLICATION = 'twitter_analytics.wsgi.application'
 ########## END WSGI CONFIGURATION
 
-
-########## SOUTH CONFIGURATION
-# See: http://south.readthedocs.org/en/latest/installation.html#configuring-your-django-installation
-INSTALLED_APPS += (
-    # Database migration helpers:
-    'south',
-    'core',
-    'social_auth'
-)
-# Don't need to use South when setting up a test database.
-SOUTH_TESTS_MIGRATE = False
-########## END SOUTH CONFIGURATION
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
+    'social.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -266,7 +275,10 @@ TWITTER_CONSUMER_KEY = 'cGKDvjU4Z9EahcMknGtrQFaMq'
 TWITTER_CONSUMER_SECRET = 'zBaBU36Nmnl0y1QtLKGdpMFbvOB74cZaNTPtTKpk9sxgdb7qoc'
 
 LOGIN_URL = '/login-form/'
+SOCIAL_AUTH_LOGIN_URL = '/login-form/'
 LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
 LOGIN_ERROR_URL = '/login-error/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 AUTH_USER_MODEL = 'core.AppUser'
 SOCIAL_AUTH_USER_MODEL = 'core.AppUser'
