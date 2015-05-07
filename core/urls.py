@@ -6,4 +6,5 @@ urlpatterns = patterns('core.views',
                       url(r'^login-error/$', 'login_error'),
                       url(r'^logged-in/$', 'homepage'),
                       url(r'^login-error/$', 'login_error'),
+                      url(r'^unsubscribe/$', 'unsubscribe'),
 )

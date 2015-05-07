@@ -161,7 +161,7 @@ TEMPLATE_DIRS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates"), os.path.join(BASE_DIR, "core", "templates")],
+        'DIRS': [os.path.join(SITE_ROOT, "templates"), os.path.join(SITE_ROOT, "core", "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
