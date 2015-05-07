@@ -8,17 +8,18 @@ env.user = 'cmpe273'
 dir_in_server = '/home/cmpe273/cmpe273-final-project/'
 
 
-def deploy():
-    print(cyan("Enter your git commit message"))
-    msg = raw_input()
-    local('git add .')
-    local('git commit -am "%s"' % msg)
-    print(green("Listing Branches"))
-    local('git branch -a')
-    print(cyan("Enter a branch name to push:"))
-    branch = raw_input()
-    local('git push origin %s' % branch)
-    print(green("Deployment complete"))
+def deploy(commit=False):
+    if commit:
+        print(cyan("Enter your git commit message"))
+        msg = raw_input()
+        local('git add .')
+        local('git commit -am "%s"' % msg)
+        print(green("Listing Branches"))
+        local('git branch -a')
+        print(cyan("Enter a branch name to push:"))
+        branch = raw_input()
+        local('git push origin %s' % branch)
+        print(green("Deployment complete"))
     with cd(dir_in_server):
         print(magenta("Inside server"))
         run("git reset --hard || true")
