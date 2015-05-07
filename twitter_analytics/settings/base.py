@@ -259,7 +259,25 @@ LOGGING = {
     }
 }
 ########## END LOGGING CONFIGURATION
-
+DEBUG_TOOLBAR_PANELS = (
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+)
+# Debug toolbar app
+CONFIG_DEFAULTS = {
+    'INTERCEPT_REDIRECTS': False,
+}
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
@@ -267,12 +285,17 @@ WSGI_APPLICATION = 'twitter_analytics.wsgi.application'
 ########## END WSGI CONFIGURATION
 
 AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
     'social.backends.twitter.TwitterOAuth',
+    'social.backends.yahoo.YahooOpenId',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-TWITTER_CONSUMER_KEY = 'cGKDvjU4Z9EahcMknGtrQFaMq'
-TWITTER_CONSUMER_SECRET = 'zBaBU36Nmnl0y1QtLKGdpMFbvOB74cZaNTPtTKpk9sxgdb7qoc'
+SOCIAL_AUTH_TWITTER_KEY = TWITTER_CONSUMER_KEY = 'cGKDvjU4Z9EahcMknGtrQFaMq'
+SOCIAL_AUTH_TWITTER_SECRET = TWITTER_CONSUMER_SECRET = 'zBaBU36Nmnl0y1QtLKGdpMFbvOB74cZaNTPtTKpk9sxgdb7qoc'
 
 LOGIN_URL = '/login-form/'
 SOCIAL_AUTH_LOGIN_URL = '/login-form/'
