@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, UserManager, AbstractUser
 from django.db import models
 
@@ -46,7 +47,7 @@ class TweetMasterData(models.Model):
 
 
 class HashTagAnalysisResult(TimeStampedModel):
-    user = models.ForeignKey(AppUser, related_name='hash_tag_analysis_results')
+    analytics_request = models.ForeignKey('AnalyticsRequest', related_name='analytics_results')
     hash_tag = models.CharField(max_length=160)
     positive = models.IntegerField(default=0)
     negative = models.IntegerField(default=0)
@@ -58,3 +59,14 @@ class HashTagAnalysisResult(TimeStampedModel):
 
     class Meta:
         verbose_name_plural = "Has Tag Analysis Results"
+
+
+class AnalyticsRequest(TimeStampedModel):
+    user = models.ForeignKey(AppUser, related_name='hah_tag_analysis_requests')
+    status = models.CharField(max_length=25, choices=settings.ANALYTICS_REQUEST_CHOICES)
+
+    def __unicode__(self):
+        return "%s %s %s" % (self.user, self.status, self.created)
+
+    class Meta:
+        verbose_name_plural = "Analytics Requests"

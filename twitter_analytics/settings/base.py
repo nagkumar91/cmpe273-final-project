@@ -305,3 +305,11 @@ LOGIN_ERROR_URL = '/login-error/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
 AUTH_USER_MODEL = 'core.AppUser'
 SOCIAL_AUTH_USER_MODEL = 'core.AppUser'
+
+ANALYTICS_REQUEST_CHOICES = (
+    ('Received Request', 'Received Request'),
+    ('Processing Request', 'Processing Request'),
+    ('Sending Email', 'Sending Email'),
+    ('Email Sent', 'Email Sent'),
+)
+ANALYTICS_NEW_REQUEST_CHOICE = 'Received Request'
