@@ -63,11 +63,13 @@ class TweetsClassifier(object):
 
 
 # ################# UNIT TEST ##################
-
+'''
 tw = TweetsClassifier("../nltk_data")
 print tw.print_useful_features(10)
 tweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
 while tweet != "exit":
     print tw.classify(tweet)
     tweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
+
+'''
 

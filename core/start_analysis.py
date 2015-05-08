@@ -21,9 +21,9 @@ def get_hashtags(hash_tags_arr):
     for tag in hash_tags_arr:
         if not returned_tags.__contains__(tag['text']):
             if len(returned_tags) == 0:
-                returned_tags = "#%s" % tag['text']
+                returned_tags = "#%s" % tag['text'].lower()
             else:
-                returned_tags = "%s,#%s" % (returned_tags, tag['text'])
+                returned_tags = "%s,#%s" % (returned_tags, tag['text'].lower())
     return returned_tags
 
 
@@ -66,8 +66,8 @@ def get_unique_hastags(analytics_req_obj):
 
 
 def analyse_tweet(tweet, hastag):
-    if hastag.lower in tweet.lower:
-        resp = classifier_object.classifier(tweet)
+    if hastag.lower() in tweet.lower():
+        resp = classifier_object.classify(tweet)
         if resp is "pos":
             return settings.TWEET_IS_POSITIVE
         else:
@@ -89,19 +89,19 @@ def send_complex_message(html_content, to_id):
 def generate_content(analytics_req_obj):
     all_results = analytics_req_obj.analytics_results.all()
     template = get_template("email_template.html")
-    html_content = template.render({'all_results': all_results})
-    return send_complex_message(html_content, analytics_req_obj.user.email)
+    return template.render({'all_results': all_results, 'user': analytics_req_obj.user})
 
 
 def start(analytics_req_obj):
-    fetch_tweet(analytics_req_obj)
-    unique_hash_tags = get_unique_hastags(analytics_req_obj)
+    analytics_req_obj.status = settings.ANALYTICS_PROCESSING_REQUEST_CHOICE
+    analytics_req_obj.save()
+    # fetch_tweet(analytics_req_obj)
 
-    # start analysis here
+    unique_hash_tags = get_unique_hastags(analytics_req_obj)
     for hashtag in unique_hash_tags:
         postive_count = negative_count = neutral_count = 0
         for tweet in analytics_req_obj.tweets.all():
-            res = analyse_tweet(tweet, hashtag)
+            res = analyse_tweet(tweet.tweet, hashtag)
             if res == settings.TWEET_IS_NEUTRAL:
                 neutral_count += 1
             elif res == settings.TWEET_IS_POSITIVE:
@@ -117,5 +117,11 @@ def start(analytics_req_obj):
         )
         htar.save()
 
-    print generate_content(analytics_req_obj)
+    html_content = generate_content(analytics_req_obj)
+    analytics_req_obj.status = settings.ANALYTICS_SENDING_EMAIL_CHOICE
+    analytics_req_obj.save()
+    status = send_complex_message(html_content, analytics_req_obj.user.email)
+
+    #webhook should change the status here
+    analytics_req_obj.status = settings.ANALYTICS_EMAIL_SENT_CHOICE
 
