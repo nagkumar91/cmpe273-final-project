@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block extra-css %}
+    <style type="text/css">
+        .tg  {border-collapse:collapse;border-spacing:0;}
+        .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;
+            border: 1px solid;
+            overflow:hidden;word-break:normal;}
+        .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;
+            border: 1px solid;
+            overflow:hidden;word-break:normal;}
+    </style>
+{% endblock %}
+{% block body %}
+
+    <table class="tg">
+        <tr>
+            <th class="tg-031e">Hashtag</th>
+            <th class="tg-031e">Positive</th>
+            <th class="tg-031e">Negative</th>
+            <th class="tg-031e">Neutral</th>
+        </tr>
+        {% for res in all_results %}
+            <tr>
+                <td class="tg-031e">{{ res.hash_tag }}</td>
+                <td class="tg-031e">{{ res.positive }}</td>
+                <td class="tg-031e">{{ res.negative }}</td>
+                <td class="tg-031e">{{ res.neutral }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}
