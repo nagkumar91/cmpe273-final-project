@@ -95,7 +95,7 @@ def generate_content(analytics_req_obj):
 def start(analytics_req_obj):
     analytics_req_obj.status = settings.ANALYTICS_PROCESSING_REQUEST_CHOICE
     analytics_req_obj.save()
-    # fetch_tweet(analytics_req_obj)
+    fetch_tweet(analytics_req_obj)
 
     unique_hash_tags = get_unique_hastags(analytics_req_obj)
     for hashtag in unique_hash_tags:
