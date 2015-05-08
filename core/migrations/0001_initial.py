@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
                 ('verified', models.BooleanField(default=False)),
                 ('tweet_id', models.CharField(max_length=1024)),
                 ('hash_tags', models.CharField(max_length=1024)),
-                ('owner_id', models.ForeignKey(related_name='fetched_tweets', to=settings.AUTH_USER_MODEL)),
+                ('analytics_request', models.ForeignKey(related_name='tweets', to='core.AnalyticsRequest')),
             ],
             options={
                 'verbose_name_plural': 'Tweet Master Data',
@@ -94,6 +94,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='tweetmasterdata',
-            unique_together=set([('tweet_id', 'owner_id')]),
+            unique_together=set([('tweet_id', 'analytics_request')]),
         ),
     ]

@@ -29,7 +29,7 @@ class AppUser(AbstractUser):
 
 
 class TweetMasterData(models.Model):
-    owner_id = models.ForeignKey(AppUser, related_name='fetched_tweets')
+    analytics_request = models.ForeignKey('AnalyticsRequest', related_name='tweets')
     created_at = models.DateTimeField(auto_now_add=False)
     tweet = models.CharField(max_length=255)
     screen_name = models.CharField(max_length=124)
@@ -42,7 +42,7 @@ class TweetMasterData(models.Model):
         return self.tweet
 
     class Meta:
-        unique_together = ("tweet_id", "owner_id")
+        unique_together = ("tweet_id", "analytics_request")
         verbose_name_plural = "Tweet Master Data"
 
 
