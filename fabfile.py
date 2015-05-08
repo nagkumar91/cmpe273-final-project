@@ -23,7 +23,7 @@ def deploy(commit=False):
     with cd(dir_in_server):
         print(magenta("Inside server"))
         run("git reset --hard || true")
-        run("git pull")
+        run("git pull origin master")
         run("source /home/cmpe273/env/bin/activate && pip install -r requirements.txt")
         with shell_env(DJANGO_SETTINGS_MODULE='twitter_analytics.settings.production'):
             run("source /home/cmpe273/env/bin/activate && ./manage.py collectstatic --noinput")
