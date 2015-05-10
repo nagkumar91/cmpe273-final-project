@@ -37,11 +37,9 @@ $(document).ready(function(){
         $('#myModal').modal('show');
         $('#email_Input').focus();
         $('#email_Input').keyup(function(){
-            console.log($(this).val());
             var enteredEmail = $(this).val();
             if(validateEmail(enteredEmail)){
                 $($(this).parent()).removeClass("has-error").addClass("has-success");
-
                         $('#save_button').removeAttr('disabled')
                  }
             else{
@@ -49,6 +47,14 @@ $(document).ready(function(){
                $('#save_button').attr('disable','disabled')
             }
         });
+    $("#save_button").click(function(){
+        var mail_id = $("#email_Input").val();
+        var url = {% url "core.views.user_email" %} + "?email="+ mail_id;
+        $.get(url, function(data){
+            console.log(data);
+            $("#myModal").modal('toggle');
+        });
+    });
 });
 </script>
 

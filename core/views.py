@@ -38,7 +38,6 @@ def unsubscribe(request):
     return render_to_response("unsubscribe.html", {'user': request.user}, context_instance=RequestContext(request))
 
 
-@csrf_exempt
 @login_required()
 def user_email(request):
     email_id = request.GET.get("email", None)
