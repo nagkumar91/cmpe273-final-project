@@ -107,6 +107,12 @@ def older_result_detail(request, id):
 
 
 @csrf_exempt
+def mail_delivered(request):
+    print request
+    return HttpResponse('OK')
+
+
+@csrf_exempt
 @login_required()
 def edit_profile(request):
     if request.method == 'GET':
