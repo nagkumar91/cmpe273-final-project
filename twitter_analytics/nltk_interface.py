@@ -1,6 +1,7 @@
 import os
 import sys
 import nltk
+import csv
 from nltk.corpus import movie_reviews as mr
 from textblob.tokenizers import word_tokenize
 from django.conf import settings
@@ -62,7 +63,8 @@ class TweetsClassifier(object):
         self.classifier.show_most_informative_features(count)
 
 
-# ################# UNIT TEST ##################
+################## UNIT TEST ##################
+
 '''
 tw = TweetsClassifier("../nltk_data")
 print tw.print_useful_features(10)
@@ -70,6 +72,62 @@ tweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
 while tweet != "exit":
     print tw.classify(tweet)
     tweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
-
 '''
+
+###############################################
+
+nltk.data.path.append("../nltk_data")
+def create_training_data():
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_neg_feats = []
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "0":
+                print("-"),
+                my_neg_feats = my_neg_feats + [(feature_extractor(row[5].split(" ")), 'neg')]
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_pos_feats = []
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "4":
+                print("+"),
+                my_pos_feats = my_pos_feats + [(feature_extractor(row[5].split(" ")), 'pos')]
+
+        #my_neg_feats = [(feature_extractor(row[5].split(" ")), 'neg') for row in rdr if row[0] == "0"]
+        #my_pos_feats = [(feature_extractor(row[5].split(" ")), 'pos') for row in rdr if row[0] == "4"]
+
+    return (my_neg_feats + my_pos_feats)
+
+def my_classify(tweet):
+   tokens = word_tokenize(tweet, include_punc=False)
+   filtered = (t.lower() for t in tokens if len(t) >= 3)
+   feats = feature_extractor(filtered)
+   prob_dist = my_classifier.prob_classify(feats)
+   return(prob_dist.max())
+
+my_train_feats = create_training_data()
+my_classifier = nltk.NaiveBayesClassifier.train(my_train_feats)
+print "New Classifier:"
+my_classifier.show_most_informative_features(10)
+print "Old Classifier:"
+tw = TweetsClassifier("../nltk_data")
+print tw.print_useful_features(10)
+mytweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
+while mytweet != "exit":
+    print("New Classifier says :"),
+    print my_classify(mytweet)
+    print("Old Classifier says :"),
+    print tw.classify(mytweet)
+    mytweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
 
