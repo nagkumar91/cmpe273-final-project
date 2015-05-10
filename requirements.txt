@@ -12,3 +12,5 @@ requests
 requests-oauthlib
 python-social-auth
 fabric
+celery
+django-celery

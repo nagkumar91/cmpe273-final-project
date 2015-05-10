@@ -9,4 +9,5 @@ urlpatterns = patterns('core.views',
                       url(r'^unsubscribe/$', 'unsubscribe'),
                       url(r'^user_email/$', 'user_email'),
                       url(r'^get_status/$', 'get_status'),
+                      url(r'^start_analytics/$', 'start_analytics'),
 )

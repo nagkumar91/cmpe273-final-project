@@ -221,7 +221,10 @@ DJANGO_APPS = (
 LOCAL_APPS = (
     'core',
     'social.apps.django_app.default',
+    'djcelery',
 )
+
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS

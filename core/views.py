@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, render_to_response
 
 # Create your views here.
@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from social.apps.django_app.default.models import UserSocialAuth
 from .models import AnalyticsRequest
+from .tasks import queue_analytics_req
 
 
 def homepage(request):
@@ -53,9 +54,19 @@ def get_status(request):
         recent_req = request.users.hah_tag_analysis_requests.all().order_by("-created")
         if len(recent_req) > 0:
             recent_req = recent_req[0]
-            analytics_request_obj = recent_req
+            return HttpResponse(recent_req.status)
         else:
-            analytics_request_obj = AnalyticsRequest(user=request.user, status=settings.ANALYTICS_NEW_REQUEST_CHOICE)
-            analytics_request_obj.save()
-        return HttpResponse(analytics_request_obj.status)
-    return HttpResponse('No Email Provided')
+            return HttpResponseBadRequest()
+    return HttpResponseNotFound()
+
+
+@csrf_exempt
+@login_required()
+def start_analytics(request):
+    email_id = request.user.email
+    if email_id:
+        analytics_request_obj = AnalyticsRequest(user=request.user, status=settings.ANALYTICS_NEW_REQUEST_CHOICE)
+        analytics_request_obj.save()
+        queue_analytics_req.delay(analytics_request_obj)
+        return HttpResponse('Accepted')
+    return HttpResponseBadRequest()
