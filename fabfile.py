@@ -29,5 +29,5 @@ def deploy(commit=False):
             run("source /home/cmpe273/env/bin/activate && ./manage.py collectstatic --noinput")
             run("source /home/cmpe273/env/bin/activate && ./manage.py migrate --no-initial-data")
         sudo("service apache2 restart")
-        sudo("supervisorctl restart celery")
+        # sudo("supervisorctl restart celery")
     print(green("Deployment complete"))
