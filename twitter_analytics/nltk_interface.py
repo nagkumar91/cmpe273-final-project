@@ -78,9 +78,40 @@ while tweet != "exit":
 
 nltk.data.path.append("../nltk_data")
 def create_training_data():
-    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg.test.csv') as csvfile:
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_4.csv') as csvfile:
         rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
-        my_neg_feats = []
+        my_neg_feats_4 = [(feature_extractor(row[5].split(" ")), 'neg') for row in rdr]
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_3.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_neg_feats_3 = [(feature_extractor(row[5].split(" ")), 'neg') for row in rdr]
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_2.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_neg_feats_2 = [(feature_extractor(row[5].split(" ")), 'neg') for row in rdr]
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_1.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_neg_feats_1 = [(feature_extractor(row[5].split(" ")), 'neg') for row in rdr]
+        my_neg_feats = my_neg_feats_1 + my_neg_feats_2 + my_neg_feats_3 + my_neg_feats_4
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_4.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_pos_feats_4 = [(feature_extractor(row[5].split(" ")), 'pos') for row in rdr]
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_3.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_pos_feats_3 = [(feature_extractor(row[5].split(" ")), 'pos') for row in rdr]
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_2.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_pos_feats_2 = [(feature_extractor(row[5].split(" ")), 'pos') for row in rdr]
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_1.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        my_pos_feats_1 = [(feature_extractor(row[5].split(" ")), 'pos') for row in rdr]
+        my_pos_feats = my_pos_feats_1 + my_pos_feats_2 + my_pos_feats_3 + my_pos_feats_4
+
+        my_feats = my_neg_feats + my_pos_feats
+        return my_feats
+
+"""
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_2.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
         count = 0
         for row in rdr:
             count = count + 1
@@ -91,9 +122,70 @@ def create_training_data():
                 print("-"),
                 my_neg_feats = my_neg_feats + [(feature_extractor(row[5].split(" ")), 'neg')]
 
-    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos.test.csv') as csvfile:
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_3.test.csv') as csvfile:
         rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
-        my_pos_feats = []
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "0":
+                print("-"),
+                my_neg_feats = my_neg_feats + [(feature_extractor(row[5].split(" ")), 'neg')]
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.neg_4.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "0":
+                print("-"),
+                my_neg_feats = my_neg_feats + [(feature_extractor(row[5].split(" ")), 'neg')]
+
+    my_pos_feats = []
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_1.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "4":
+                print("+"),
+                my_pos_feats = my_pos_feats + [(feature_extractor(row[5].split(" ")), 'pos')]
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_2.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "4":
+                print("+"),
+                my_pos_feats = my_pos_feats + [(feature_extractor(row[5].split(" ")), 'pos')]
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_3.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
+        count = 0
+        for row in rdr:
+            count = count + 1
+            if (count % 1000 == 0):
+                print ""
+                print "Processed %s tweets for training. %s more to go" % (count, 1600000 - count)
+            if row[0] == "4":
+                print("+"),
+                my_pos_feats = my_pos_feats + [(feature_extractor(row[5].split(" ")), 'pos')]
+
+    with open('/Users/rprakash/cmpe273-final-project/nltk_data/corpora/trainingandtestdata/training.pos_4.test.csv') as csvfile:
+        rdr = csv.reader(csvfile, delimiter=',', quotechar='"')
         count = 0
         for row in rdr:
             count = count + 1
@@ -108,6 +200,7 @@ def create_training_data():
         #my_pos_feats = [(feature_extractor(row[5].split(" ")), 'pos') for row in rdr if row[0] == "4"]
 
     return (my_neg_feats + my_pos_feats)
+"""
 
 def my_classify(tweet):
    tokens = word_tokenize(tweet, include_punc=False)
