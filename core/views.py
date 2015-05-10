@@ -8,6 +8,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from social.apps.django_app.default.models import UserSocialAuth
+from core.start_analysis import start
 from .models import AnalyticsRequest
 from .tasks import queue_analytics_req
 
@@ -69,7 +70,10 @@ def start_analytics(request):
     if email_id:
         analytics_request_obj = AnalyticsRequest(user=request.user, status=settings.ANALYTICS_NEW_REQUEST_CHOICE)
         analytics_request_obj.save()
-        queue_analytics_req.delay(analytics_request_obj)
+        if settings.QUQUEING_REQUESTS:
+            queue_analytics_req.delay(analytics_request_obj)
+        else:
+            start(analytics_request_obj)
         return HttpResponse('Accepted')
 
     return HttpResponseBadRequest()
@@ -78,7 +82,7 @@ def start_analytics(request):
 @login_required()
 def older_results(request):
     new_request = request.GET.get("new", None)
-    previous_requests = request.user.hah_tag_analysis_requests.all()
+    previous_requests = request.user.hah_tag_analysis_requests.all().order_by("-created")
     return render_to_response("previous_analysis.html",
                                 {
                                     'previous_requests': previous_requests,

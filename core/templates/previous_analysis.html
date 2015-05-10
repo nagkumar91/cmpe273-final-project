@@ -9,29 +9,26 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
+                    <th>Time</th>
+                    <th>Status</th>
+
                 </tr>
                 </thead>
                 <tbody>
 
                 {% for req in previous_requests %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td>{{ req.created }}</td>
+                        <td>{{ req.status }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         {% else %}
             <h4>No previous requests found</h4>
-            <a href="{% url 'core.views.older_results' %}?new=True">New Request</a>
-        {% endif %}
 
+        {% endif %}
+        <a href="{% url 'core.views.older_results' %}?new=True">New Request</a>
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -64,6 +61,7 @@
                     success: function(data) {
                         console.log(data);
                         $("#myModal").modal('toggle');
+                        document.location.href = "{% url 'core.views.older_results' %}";
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("Something went wrong. Check your profile if you have given us a valid email ID.");

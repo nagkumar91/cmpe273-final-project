@@ -324,3 +324,4 @@ TWEET_IS_NEUTRAL = 0
 
 MAILGUN_API_KEY = 'key-d14e446a351d68d5ed2073b1e10f3fc4'
 MAILGUN_URL = 'https://api.mailgun.net/v3/mailgun.nagkumar.com/messages'
+QUQUEING_REQUESTS = True

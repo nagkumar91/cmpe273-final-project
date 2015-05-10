@@ -11,6 +11,6 @@ DATABASES = {
     }
 }
 BROKER_URL = 'amqp://guest:Cmp3273@localhost:5672//'
-
+QUQUEING_REQUESTS = False
 # DEBUG = True #temporary
 ALLOWED_HOSTS = ['*']
