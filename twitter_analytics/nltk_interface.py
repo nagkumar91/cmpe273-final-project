@@ -72,7 +72,7 @@ tweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
 while tweet != "exit":
     print tw.classify(tweet)
     tweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
-'''
+
 
 ###############################################
 
@@ -131,3 +131,4 @@ while mytweet != "exit":
     print tw.classify(mytweet)
     mytweet = raw_input('Enter your tweet to classify (Type \"exit\" to quit) : ')
 
+'''
