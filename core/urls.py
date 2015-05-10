@@ -13,5 +13,6 @@ urlpatterns = patterns('core.views',
                       url(r'^older_results/$', 'older_results'),
                       url(r'^older_result_detail/(?P<id>\d+)/$', 'older_result_detail'),
                       url(r'^edit_profile/$', 'edit_profile'),
+                      url(r'^mail_delivered/$', 'mail_delivered'),
                       url(r'^log_out/$', 'log_out'),
 )
