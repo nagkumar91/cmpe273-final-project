@@ -100,20 +100,6 @@ def start(analytics_req_obj):
     unique_hash_tags = get_unique_hastags(analytics_req_obj)
     for hashtag in unique_hash_tags:
         postive_count = negative_count = neutral_count = 0
-        for tweet in analytics_req_obj.tweets.all():
-            res = analyse_tweet(tweet.tweet, hashtag)
-            if res == settings.TWEET_IS_NEUTRAL:
-                neutral_count += 1
-                o = NeutralTweet(result_set=analytics_req_obj, tweet=tweet.tweet)
-                o.save()
-            elif res == settings.TWEET_IS_POSITIVE:
-                postive_count += 1
-                o = PositiveTweet(result_set=analytics_req_obj, tweet=tweet.tweet)
-                o.save()
-            else:
-                o = NegativeTweet(result_set=analytics_req_obj, tweet=tweet.tweet)
-                o.save()
-                negative_count += 1
         htar = HashTagAnalysisResult(
             analytics_request=analytics_req_obj,
             hash_tag=hashtag,
@@ -122,6 +108,25 @@ def start(analytics_req_obj):
             neutral=neutral_count,
         )
         htar.save()
+        for tweet in analytics_req_obj.tweets.all():
+            res = analyse_tweet(tweet.tweet, hashtag)
+            if res == settings.TWEET_IS_NEUTRAL:
+                neutral_count += 1
+                o = NeutralTweet(result_set=htar, tweet=tweet.tweet)
+                o.save()
+            elif res == settings.TWEET_IS_POSITIVE:
+                postive_count += 1
+                o = PositiveTweet(result_set=htar, tweet=tweet.tweet)
+                o.save()
+            else:
+                o = NegativeTweet(result_set=htar, tweet=tweet.tweet)
+                o.save()
+                negative_count += 1
+        htar.positive = postive_count
+        htar.negative = negative_count
+        htar.neutral = neutral_count
+        htar.save()
+
 
     html_content = generate_content(analytics_req_obj)
     analytics_req_obj.status = settings.ANALYTICS_SENDING_EMAIL_CHOICE
