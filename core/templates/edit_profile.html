@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Previous Analysis{% endblock %}
+
+{% block navbar-edit-profile-active %}active {% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if updated %}
+            <div class="alert alert-success" role="alert">Saved!</div>
+        {% endif %}
+        <form action="{% url 'core.views.edit_profile' %}" method="post" class="form-horizontal">
+            <fieldset>
+
+                <!-- Form Name -->
+                <legend>Edit Profile</legend>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="email">Email ID</label>
+
+                    <div class="col-md-8">
+                        <input id="email" name="email" type="text" placeholder="email" class="form-control input-md"
+                               value="{{ user.email }}">
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="checkboxes">Receive Email</label>
+
+                    <div class="col-md-4">
+                        <div class="checkbox">
+                            <label for="checkboxes-0">
+                                <input type="checkbox" name="checkboxes" id="checkboxes-0" value="True" {% if user.send_mail %}checked={% endif %}>
+                                Yes
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="save"></label>
+
+                    <div class="col-md-4">
+                        <button id="save" name="save" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+
+
+            </fieldset>
+        </form>
+        <div class="row">
+            <label class="col-md-4 control-label" for="delete_account">Delete account</label>
+
+            <div class="col-md-4">
+                <a href="{% url 'core.views.unsubscribe' %}" class="btn btn-danger" id="delete_account">Delete
+                    Account</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

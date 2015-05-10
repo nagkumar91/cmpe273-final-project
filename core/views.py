@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 
 # Create your views here.
 from django.template import RequestContext
@@ -19,6 +19,7 @@ def homepage(request):
 def login_error(request):
     print request
     return HttpResponse("login error")
+
 
 @login_required()
 def logged_in_page(request):
@@ -70,4 +71,46 @@ def start_analytics(request):
         analytics_request_obj.save()
         queue_analytics_req.delay(analytics_request_obj)
         return HttpResponse('Accepted')
+
     return HttpResponseBadRequest()
+
+
+@login_required()
+def older_results(request):
+    new_request = request.GET.get("new", None)
+    previous_requests = request.user.hah_tag_analysis_requests.all()
+    return render_to_response("previous_analysis.html",
+                                {
+                                    'previous_requests': previous_requests,
+                                    'user': request.user,
+                                    'new_request': new_request
+                                },
+                              )
+
+
+@csrf_exempt
+@login_required()
+def edit_profile(request):
+    if request.method == 'GET':
+        return render_to_response("edit_profile.html", {'user': request.user, 'updated': False},
+                                  context_instance=RequestContext(request))
+    else:
+        new_mail_id = request.POST.get("email")
+        receive_email = request.POST.get("checkboxes")
+        print request.POST.get("checkboxes")
+        try:
+            if receive_email[0] is "True":
+                request.user.send_mail = True
+        except TypeError:
+            request.user.send_mail = False
+        request.user.email = new_mail_id
+        request.user.save()
+
+        return render_to_response("edit_profile.html", {'user': request.user, 'updated': True},
+                                  context_instance=RequestContext(request))
+
+
+@login_required()
+def log_out(request):
+    logout(request)
+    return redirect('homepage')

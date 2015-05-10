@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Unsubscribe{% endblock %}
-
+{% block navbar %}{% endblock %}
 {% block body %}
     <h4>We are sorry to see you go away. If you want more analytics, you can come back and login again. Your account is now deactivated</h4>
+    <p><a href="{% url 'core.views.homepage' %}">Homepage</a></p>
 {% endblock %}

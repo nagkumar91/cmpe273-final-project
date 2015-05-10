@@ -10,4 +10,7 @@ urlpatterns = patterns('core.views',
                       url(r'^user_email/$', 'user_email'),
                       url(r'^get_status/$', 'get_status'),
                       url(r'^start_analytics/$', 'start_analytics'),
+                      url(r'^older_results/$', 'older_results'),
+                      url(r'^edit_profile/$', 'edit_profile'),
+                      url(r'^log_out/$', 'log_out'),
 )

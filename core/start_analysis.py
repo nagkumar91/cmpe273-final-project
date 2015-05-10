@@ -124,4 +124,5 @@ def start(analytics_req_obj):
 
     #webhook should change the status here
     analytics_req_obj.status = settings.ANALYTICS_EMAIL_SENT_CHOICE
+    analytics_req_obj.save()
 
