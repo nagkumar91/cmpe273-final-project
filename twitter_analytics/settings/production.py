@@ -10,7 +10,7 @@ DATABASES = {
         'PORT': '',
     }
 }
-BROKER_URL = 'amqp://guest:Cmp32&#@localhost:5672//'
+BROKER_URL = 'amqp://guest:Cmp3273@localhost:5672//'
 
 # DEBUG = True #temporary
 ALLOWED_HOSTS = ['*']
