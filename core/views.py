@@ -131,4 +131,4 @@ def edit_profile(request):
 @login_required()
 def log_out(request):
     logout(request)
-    return redirect('homepage')
+    return redirect('/')

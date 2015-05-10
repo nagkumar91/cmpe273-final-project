@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Previous Analysis{% endblock %}
+{% block extra-css %}
+    <style>
+        .loadingGif {
 
+        }
+    </style>
+{% endblock %}
 {% block navbar-previous-analysis-active %}active {% endblock %}
 
 {% block body %}
@@ -29,6 +35,7 @@
 
         {% endif %}
         <a href="{% url 'core.views.older_results' %}?new=True">New Request</a>
+
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -38,6 +45,10 @@
                     </div>
                     <div class="modal-body">
                         <h6>Clicking yes, means that you agree to receive emails from us.</h6>
+                        <div class="text-center">
+                            <div class="span4"><img src="http://www.jotform.com/images/ajax-loader.gif" alt="Loading"
+                                                    class="loadingGif" style="display: none"/></div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="yes_button" class="btn btn-primary">Yes</button>
@@ -47,6 +58,10 @@
             </div>
         </div>
     </div>
+
+
+
+
 {% endblock %}
 {% block extra-js %}
     <script>
@@ -54,16 +69,18 @@
             {% if new_request %}
                 $('#myModal').modal('show');
             {% endif %}
-            $("#yes_button").click(function(){
+            $("#yes_button").click(function () {
+                $(".loadingGif").show();
+                $("#yes_button").prop("disabled", true);
                 $.ajax({
                     url: "{% url 'core.views.start_analytics' %}",
                     type: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data);
                         $("#myModal").modal('toggle');
                         document.location.href = "{% url 'core.views.older_results' %}";
                     },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert("Something went wrong. Check your profile if you have given us a valid email ID.");
                         document.location.href = "{% url 'core.views.edit_profile' %}";
                     }
