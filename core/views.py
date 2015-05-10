@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, render_to_response, redirect
 
@@ -90,6 +91,19 @@ def older_results(request):
                                     'new_request': new_request
                                 },
                               )
+
+
+@login_required()
+def older_result_detail(request, id):
+    try:
+        analysis_req = AnalyticsRequest.objects.get(pk=id)
+        return render_to_response("detailed_analysis.html",
+            {
+                'results': analysis_req.analytics_results.all().order_by("-positive", "-negative")
+            }
+        )
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound()
 
 
 @csrf_exempt

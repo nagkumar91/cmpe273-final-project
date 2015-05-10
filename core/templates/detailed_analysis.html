@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Hash Tag</th>
+            <th>Positive Tweets</th>
+            <th>Negative Tweets</th>
+            <th>Neutral Tweets</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for res in results %}
+            <tr>
+                <td>{{ res.hash_tag }}</td>
+                <td>{{ res.positive }}</td>
+                <td>{{ res.negative }}</td>
+                <td>{{ res.neutral }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

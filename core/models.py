@@ -70,3 +70,27 @@ class AnalyticsRequest(TimeStampedModel):
 
     class Meta:
         verbose_name_plural = "Analytics Requests"
+
+
+class PositiveTweet(models.Model):
+    result_set = models.ForeignKey(HashTagAnalysisResult, related_name='positive_tweets')
+    tweet = models.TextField()
+
+    def __unicode__(self):
+        return "Result set %s, tweet=> %s" % (self.result_set, self.tweet)
+
+
+class NegativeTweet(models.Model):
+    result_set = models.ForeignKey(HashTagAnalysisResult, related_name='negative_tweets')
+    tweet = models.TextField()
+
+    def __unicode__(self):
+        return "Result set %s, tweet=> %s" % (self.result_set, self.tweet)
+
+
+class NeutralTweet(models.Model):
+    result_set = models.ForeignKey(HashTagAnalysisResult, related_name='neutral_tweets')
+    tweet = models.TextField()
+
+    def __unicode__(self):
+        return "Result set %s, tweet=> %s" % (self.result_set, self.tweet)

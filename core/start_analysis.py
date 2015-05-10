@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import IntegrityError
 import requests
 from requests_oauthlib import OAuth1
-from .models import TweetMasterData, HashTagAnalysisResult
+from .models import TweetMasterData, HashTagAnalysisResult, NeutralTweet, PositiveTweet, NegativeTweet
 from twitter_analytics.nltk_interface import TweetsClassifier
 from django.template.loader import get_template
 
@@ -87,7 +87,7 @@ def send_complex_message(html_content, to_id):
 
 
 def generate_content(analytics_req_obj):
-    all_results = analytics_req_obj.analytics_results.all()
+    all_results = analytics_req_obj.analytics_results.all().order_by("-positive", "-negative")
     template = get_template("email_template.html")
     return template.render({'all_results': all_results, 'user': analytics_req_obj.user})
 
@@ -104,16 +104,22 @@ def start(analytics_req_obj):
             res = analyse_tweet(tweet.tweet, hashtag)
             if res == settings.TWEET_IS_NEUTRAL:
                 neutral_count += 1
+                o = NeutralTweet(result_set=analytics_req_obj, tweet=tweet.tweet)
+                o.save()
             elif res == settings.TWEET_IS_POSITIVE:
                 postive_count += 1
+                o = PositiveTweet(result_set=analytics_req_obj, tweet=tweet.tweet)
+                o.save()
             else:
+                o = NegativeTweet(result_set=analytics_req_obj, tweet=tweet.tweet)
+                o.save()
                 negative_count += 1
         htar = HashTagAnalysisResult(
             analytics_request=analytics_req_obj,
             hash_tag=hashtag,
             positive=postive_count,
             negative=negative_count,
-            neutral=neutral_count
+            neutral=neutral_count,
         )
         htar.save()
 

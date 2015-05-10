@@ -18,7 +18,7 @@
 
                 {% for req in previous_requests %}
                     <tr>
-                        <td>{{ req.created }}</td>
+                        <td><a href="{% url 'core.views.older_result_detail' req.pk %}">{{ req.created }}</a></td>
                         <td>{{ req.status }}</td>
                     </tr>
                 {% endfor %}
