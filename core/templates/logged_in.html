@@ -3,59 +3,61 @@
 {% block title %}Final Step{% endblock %}
 
 {% block body %}<h1>Hello {{ user }}!</h1>
-<h4>Please wait while we analyse your tweets!</h4>
-<p><a href="/unsubscribe/">Click here</a> to unsubscribe from our reports</p>
+    <h4>Please wait while we analyse your tweets!</h4>
+    <p><a href="{% url 'core.views.unsubscribe' %}">Click here</a> to unsubscribe from our reports</p>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="enterEmailLabel">Enter your email address</h4>
-      </div>
-      <div class="modal-body">
-          <div class="form-group">
-            <input type="text" name="emailAddress" class="form-control" id="email_Input" placeholder="Email:" ><br>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="save_button" class="btn btn-primary" disabled>Save</button>
-      </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="enterEmailLabel">Enter your email address</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="emailAddress" class="form-control" id="email_Input"
+                               placeholder="Email:"><br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="save_button" class="btn btn-primary" disabled>Save</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 {% endblock %}
 
 
-{% block extra-js %}<script>
-function validateEmail(email) {
-    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    return re.test(email);
-}
-$(document).ready(function(){
-
-        $('#myModal').modal('show');
+{% block extra-js %}
+    <script>
+    function validateEmail(email) {
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return re.test(email);
+    }
+    $(document).ready(function () {
+        if("{{ user.email }}".length == 0)
+            $('#myModal').modal('show');
         $('#email_Input').focus();
-        $('#email_Input').keyup(function(){
+        $('#email_Input').keyup(function () {
             var enteredEmail = $(this).val();
-            if(validateEmail(enteredEmail)){
+            if (validateEmail(enteredEmail)) {
                 $($(this).parent()).removeClass("has-error").addClass("has-success");
-                        $('#save_button').removeAttr('disabled')
-                 }
-            else{
+                $('#save_button').removeAttr('disabled')
+            }
+            else {
                 $($(this).parent()).removeClass("has-success").addClass("has-error");
-               $('#save_button').attr('disable','disabled')
+                $('#save_button').attr('disable', 'disabled')
             }
         });
-    $("#save_button").click(function(){
-        var mail_id = $("#email_Input").val();
-        var url = {% url "core.views.user_email" %} + "?email="+ mail_id;
-        $.get(url, function(data){
-            console.log(data);
-            $("#myModal").modal('toggle');
+        $("#save_button").click(function () {
+            var mail_id = $("#email_Input").val();
+            var url = {% url "core.views.user_email" %} +"?email=" + mail_id;
+            $.get(url, function (data) {
+                console.log(data);
+                $("#myModal").modal('toggle');
+            });
         });
     });
-});
-</script>
+    </script>
 
-{%  endblock %}
+{% endblock %}

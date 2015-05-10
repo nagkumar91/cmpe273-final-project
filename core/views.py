@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, render_to_response
@@ -35,6 +36,7 @@ def logged_in_page(request):
 def unsubscribe(request):
     request.user.unsubscribe = True
     request.user.save()
+    logout(request)
     return render_to_response("unsubscribe.html", {'user': request.user}, context_instance=RequestContext(request))
 
 
