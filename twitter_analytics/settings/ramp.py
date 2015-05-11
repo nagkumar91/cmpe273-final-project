@@ -27,7 +27,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'twitter_analytics',
         'USER': 'rprakash',
-        'PASSWORD': 'root123',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }
@@ -56,6 +56,7 @@ MIDDLEWARE_CLASSES += (
 )
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
+QUQUEING_REQUESTS=False
 
 # http://django-debug-toolbar.readthedocs.org/en/latest/installation.html
 # INTERNAL_IPS = ('127.0.0.1',)
