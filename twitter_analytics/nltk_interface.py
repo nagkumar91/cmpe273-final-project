@@ -110,10 +110,10 @@ class TweetsClassifier(object):
         feats = feature_extractor(filtered)
         prob_dist = self.classifier.prob_classify(feats)
         print "For text: %s" % tweet
-        print ""
         print(prob_dist.prob('pos')),
         print(prob_dist.prob("neg")),
         print prob_dist.max()
+        print ""
         return (prob_dist.max())
 
 
