@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block title %}Detailed Analysis{% endblock %}
 {% block body %}
 <div class="container">
     <table class="table table-hover">
@@ -13,7 +14,7 @@
         <tbody>
         {% for res in results %}
             <tr>
-                <td>{{ res.hash_tag }}</td>
+                <td><a href="{% url 'core.views.older_result_detail_with_hash' res.pk res.hash_tag %}">{{ res.hash_tag }}</a></td>
                 <td>{{ res.positive }}</td>
                 <td>{{ res.negative }}</td>
                 <td>{{ res.neutral }}</td>

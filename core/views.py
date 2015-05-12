@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from social.apps.django_app.default.models import UserSocialAuth
 from core.start_analysis import start
-from .models import AnalyticsRequest
+from .models import AnalyticsRequest, HashTagAnalysisResult
 from .tasks import queue_analytics_req
 
 
@@ -105,6 +105,24 @@ def older_result_detail(request, id):
     except ObjectDoesNotExist:
         return HttpResponseNotFound()
 
+
+@login_required()
+def older_result_detail_with_hash(request, result_id, hash_tag):
+    try:
+        analysis_result = HashTagAnalysisResult.objects.get(pk=result_id)
+        positive_tweets = analysis_result.positive_tweets.all()
+        negative_tweets = analysis_result.negative_tweets.all()
+        neutral_tweets = analysis_result.neutral_tweets.all()
+
+        return render_to_response("detailed_analysis_with_tweets.html",
+            {
+                'result': analysis_result,
+                'positive_tweets': positive_tweets,
+                'negative_tweets': negative_tweets,
+                'neutral_tweets': neutral_tweets
+            })
+    except ObjectDoesNotExist:
+        return HttpResponseNotFound()
 
 @csrf_exempt
 def mail_delivered(request):
