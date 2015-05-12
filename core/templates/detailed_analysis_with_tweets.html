@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Detailed Analysis{% endblock %}
+{% block body %}
+    <div class="container">
+        <h3>Detailed result for {{ result.hash_tag }} </h3>
+
+        {% if positive_tweets %}
+            <h4>Positive Tweets:</h4>
+            <div class="bs-example">
+                <ul class="list-group">
+                    {% for tweet in positive_tweets %}
+                        <li class="list-group-item">{{ tweet.tweet }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if negative_tweets %}
+            <h4>Negative Tweets:</h4>
+            <div class="bs-example">
+                <ul class="list-group">
+                    {% for tweet in negative_tweets %}
+                        <li class="list-group-item">{{ tweet.tweet }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+
+
+    </div>
+{% endblock %}
