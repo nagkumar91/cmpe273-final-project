@@ -115,7 +115,7 @@ class TweetsClassifier(object):
         filtered = (t.lower() for t in tokens if len(t) >= 3)
         feats = feature_extractor(filtered)
         prob_dist = self.classifier.prob_classify(feats)
-        print "For text: %s" % tweet
+        print "For text: %s" % tweet.encode('utf-8')
         print(prob_dist.prob('pos')),
         print(prob_dist.prob("neg")),
         print prob_dist.max()
