@@ -94,8 +94,14 @@ class TweetsClassifier(object):
         neg_feats = [(feature_extractor(mr.words(fileids=[f])), 'neg') for f in neg_fds]
         pos_feats = [(feature_extractor(mr.words(fileids=[f])), 'pos') for f in pos_fds]
         movie_review_feats = neg_feats + pos_feats
-        stanford_feats = create_training_features_from_stanford_data(nltk_data_dir)
-        train_feats = movie_review_feats + stanford_feats
+
+        # stanford tweet processing can slow things down to a crawl. Enable it only in production
+        if settings.DEBUG == False:
+            stanford_feats = create_training_features_from_stanford_data(nltk_data_dir)
+            train_feats = movie_review_feats + stanford_feats
+        else:
+            train_feats = movie_review_feats
+
         self.classifier = nltk.NaiveBayesClassifier.train(train_feats)
         self.classifier.show_most_informative_features(10)
 
