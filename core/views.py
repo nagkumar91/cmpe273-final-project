@@ -110,15 +110,17 @@ def older_result_detail(request, id):
 def older_result_detail_with_hash(request, result_id):
     try:
         analysis_result = HashTagAnalysisResult.objects.get(pk=result_id)
-        positive_tweets = analysis_result.positive_tweets.all()
-        negative_tweets = analysis_result.negative_tweets.all()
+        if request.user == analysis_result.analytics_request.user:
+            positive_tweets = analysis_result.positive_tweets.all()
+            negative_tweets = analysis_result.negative_tweets.all()
 
-        return render_to_response("detailed_analysis_with_tweets.html",
-            {
-                'result': analysis_result,
-                'positive_tweets': positive_tweets,
-                'negative_tweets': negative_tweets
-            })
+            return render_to_response("detailed_analysis_with_tweets.html",
+                {
+                    'result': analysis_result,
+                    'positive_tweets': positive_tweets,
+                    'negative_tweets': negative_tweets
+                })
+        return HttpResponseBadRequest()
     except ObjectDoesNotExist:
         return HttpResponseNotFound()
 
