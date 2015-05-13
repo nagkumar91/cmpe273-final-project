@@ -321,6 +321,7 @@ NLTK_DATA_DIR = os.path.join(SITE_ROOT, 'nltk_data')
 TWEET_IS_POSITIVE = 1
 TWEET_IS_NEGATIVE = -1
 TWEET_IS_NEUTRAL = 0
+TWEET_HAS_NO_HASHTAG = -777
 
 MAILGUN_API_KEY = 'key-d14e446a351d68d5ed2073b1e10f3fc4'
 MAILGUN_URL = 'https://api.mailgun.net/v3/mailgun.nagkumar.com/messages'

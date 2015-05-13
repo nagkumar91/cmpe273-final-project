@@ -64,15 +64,16 @@ def get_unique_hastags(analytics_req_obj):
                     all_unique_hashtags.append(ht)
     return all_unique_hashtags
 
-
 def analyse_tweet(tweet, hastag):
-    if hastag.lower() in tweet.lower():
-        resp = classifier_object.classify(tweet)
-        if resp is "pos":
-            return settings.TWEET_IS_POSITIVE
-        else:
-            return settings.TWEET_IS_NEGATIVE
-    return settings.TWEET_IS_NEUTRAL
+    if hastag.lower() not in tweet.lower():
+        return settings.TWEET_HAS_NO_HASHTAG
+    resp = classifier_object.classify(tweet)
+    if resp is "pos":
+        return settings.TWEET_IS_POSITIVE
+    if resp is "neg":
+        return settings.TWEET_IS_NEGATIVE
+    else:
+        return settings.TWEET_IS_NEUTRAL
 
 
 def send_complex_message(html_content, to_id):
@@ -118,10 +119,11 @@ def start(analytics_req_obj):
                 postive_count += 1
                 o = PositiveTweet(result_set=htar, tweet=tweet.tweet)
                 o.save()
-            else:
+            elif res == settings.TWEET_IS_NEGATIVE:
                 o = NegativeTweet(result_set=htar, tweet=tweet.tweet)
                 o.save()
                 negative_count += 1
+
         htar.positive = postive_count
         htar.negative = negative_count
         htar.neutral = neutral_count

@@ -26,6 +26,16 @@
             </div>
         {% endif %}
 
+        {% if neutral_tweets %}
+            <h4>Neutral Tweets:</h4>
+            <div class="bs-example">
+                <ul class="list-group">
+                    {% for tweet in neutral_tweets %}
+                        <li class="list-group-item">{{ tweet.tweet }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
 
 
     </div>

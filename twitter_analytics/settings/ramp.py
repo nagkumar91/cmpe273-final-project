@@ -7,7 +7,8 @@ from .base import *
 
 ########## DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = ['*']
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
 TEMPLATE_DEBUG = DEBUG

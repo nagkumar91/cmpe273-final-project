@@ -18,7 +18,7 @@ def feature_extractor(words):
     return dict(((word.lower(), True) for word in words if word.lower() not in sw))
 
 """
-sample input: 'Hey @stonyface, check out http://videogags.org. Might make you *really* laugh'
+sample input: 'Hey @stonyface, check out http://videogags.org. Might make you *really* #laugh'
 output: 'Hey AT_USER, check out URL. Might make you really laugh'
 """
 def preprocess_tweet(tweet):
@@ -26,6 +26,8 @@ def preprocess_tweet(tweet):
     tweet = re.sub('\*','', tweet)
     tweet = re.sub('\!','', tweet)
     tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))','URL',tweet)
+    tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
+
     tweet = tweet.strip('\'"')
     return tweet
 
@@ -117,7 +119,11 @@ class TweetsClassifier(object):
         prob_dist = self.classifier.prob_classify(feats)
         print "For text: %s" % tweet.encode('utf-8')
         print(prob_dist.prob('pos')),
-        print(prob_dist.prob("neg")),
+        print(prob_dist.prob('neg')),
+        if (abs(prob_dist.prob('pos') - prob_dist.prob("neg")) < 0.25):
+            print 'neutral'
+            print ""
+            return 'neutral'
         print prob_dist.max()
         print ""
         return (prob_dist.max())
